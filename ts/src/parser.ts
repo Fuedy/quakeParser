@@ -84,6 +84,5 @@ export function gameDataBuilder(gameCount: number, gameRawData:GameRawData) {
 
 const rawData = (parser('quakelog/teste.log'))
 rawData.forEach((gameRawData, index) => {
-    const test = gameDataBuilder(index,gameRawData)
-    console.log(test)
+    console.log(gameDataBuilder(index,gameRawData))
 })
