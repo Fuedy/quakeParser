@@ -38,6 +38,7 @@
  22:04 Item: 2 weapon_rocketlauncher
  22:04 Item: 2 ammo_rockets
  22:06 Kill: 2 3 7: Isgalamido killed Mocinha by MOD_ROCKET_SPLASH
+ 22:06 Kill: 2 3 7: Mocinha killed Isgalamido by MOD_ROCKET_SPLASH
  22:11 Item: 2 item_quad
  22:11 ClientDisconnect: 3
  22:18 Kill: 2 2 7: Isgalamido killed Isgalamido by MOD_ROCKET_SPLASH
@@ -47,6 +48,7 @@
  22:43 Item: 2 weapon_rocketlauncher
  22:45 Item: 2 item_armor_body
  23:06 Kill: 1022 2 22: <world> killed Isgalamido by MOD_TRIGGER_HURT
+ 23:06 Kill: 1022 2 22: <world> killed Mocinha by MOD_TRIGGER_HURT
  23:09 Item: 2 weapon_rocketlauncher
  23:10 Item: 2 ammo_rockets
  23:25 Item: 2 item_health_large

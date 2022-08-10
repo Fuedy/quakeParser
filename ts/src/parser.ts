@@ -1,24 +1,31 @@
 import * as fs from 'fs'
 
-export function parser(params: any) {
-    //const log = fs.readFileSync('quakelog/qgames.log', 'utf8')
-    const log = fs.readFileSync('quakelog/teste.log', 'utf8')
+type GameRawData = {
+    gameCount: number,
+    totalKills: number,
+    players: Set<string>,
+    kills: Record<string, number>
+}
+
+export function parser(logPath: string) : Array<GameRawData> {
+    const log = fs.readFileSync(logPath, 'utf8')
     const games = log.split('InitGame')
-    const gamesData = []
+    const gamesData: Array<GameRawData> = []
     games.shift()
-    let gamesCount = 0
+    let gameCount = 0
     
     games.forEach(game => {
-        gamesCount++
+        gameCount++
         let totalKills = 0
-        const players = new Set()
+        const killers = []
+        const killedByWorld = []
+        const players:Set<string> = new Set()
 
         const killCount = game.match(/.Kill./gm)
         const result = game.split(/\r?\n/)
-        const filtered = result.filter(value => {
+        result.filter(value => {
             return value.includes('killed')
     })
-        console.log(filtered)
 
         try {
             totalKills = killCount.length
@@ -26,33 +33,57 @@ export function parser(params: any) {
             kills.forEach(kill => {
                 const killer = (kill.split(' '))[1]
                 const killed = (kill.split(' '))[3]
-                players.add(killer).add(killed)
+                if (killer == '<world>'){
+                    killedByWorld.push(killed)
+                }
+                else{
+                    players.add(killer).add(killed)
+                    killers.push(killer)
+                }
+
             })
         } catch (error) {
             totalKills = 0
         }
 
-        const gameData = {
-            gamesCount,
+        const countKiller:Record<string, number> = {}
+        const countKilledByWorld:Record<string, number> = {}
+        killedByWorld.forEach ((killedName:string) => {
+            countKilledByWorld[killedName] =  (countKilledByWorld[killedName] || 0) + 1
+        })
+        killers.forEach ((killerName:string) => {
+            countKiller[killerName] =  (countKiller[killerName] || 0) + 1
+        })        
+
+        players.forEach((player:string) => {
+            countKiller[player] -= countKilledByWorld[player]
+        })
+        const kills = countKiller
+
+        const gameData:GameRawData = {
+            gameCount,
             totalKills,
-            players,
-            kills: {}
-        }
-        gamesData.push(gameData)
-    })
-    console.log(gamesData)
-}
-
-export function gameDataBuilder(gameCount: string, totalKills: number, playersSet: Set<string>, kills:object) {
-    const players = [...playersSet]
-    const gameData = {
-
-        gameCount: {
-            total_kills: totalKills,
             players,
             kills
         }
-    }
-    return gameData
+        gamesData.push(gameData)
+    })
+    return gamesData
 }
-parser('lol')
+
+export function gameDataBuilder(gameCount: number, gameRawData:GameRawData) {
+    return {
+        game: {
+            gameCount: gameCount,
+            total_kills: gameRawData.totalKills,
+            players: [...gameRawData.players],
+            kills: gameRawData.kills
+        }
+    }
+}
+
+const rawData = (parser('quakelog/teste.log'))
+rawData.forEach((gameRawData, index) => {
+    const test = gameDataBuilder(index,gameRawData)
+    console.log(test)
+})
