@@ -69,14 +69,6 @@ export function parser(logPath: string): Array<GameRawData> {
             players: playersList,
             kills: countKiller
         })
-
-        // const gameData: GameRawData = {
-        //     gameCount,
-        //     totalKills,
-        //     players: playersList,
-        //     kills: countKiller
-        // }
-        // gamesData.push(gameData)
     })
     return gamesData
 }
