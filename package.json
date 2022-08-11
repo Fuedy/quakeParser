@@ -6,7 +6,7 @@
   "author": "Andre Guimaraes <andrecpg@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "parser": "ts-node ts/src/parser.ts"
+    "report": "ts-node ts/src/report.ts"
   },
   "dependencies": {
     "typescript": "^4.7.4"
