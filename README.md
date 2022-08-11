@@ -4,7 +4,7 @@ This is an application developed as a code challenge for CloudWalk.
 ## Technology and Tools
 For this application, I used:
 - Node.js
-- Typescript (transpile with ts-node)
+- Typescript (transpiled with ts-node)
 - Jest for unit testings
 - Yarn for package managment
 - ESLint for static checks
@@ -32,7 +32,7 @@ yarn test
 After run all the tests, a directory called ```coverage``` will be create with a .html file if you want to see the report on your browser.
 
 ## Assumptions
-- All log files will have the same format and the one provided on the challange
+- All log files will have the same format as the one provided on the challange
 - Players cannot have special characters on their names
-- If a player kills themself (not by <world>) it will NOT award kill score
-- A game is created with a InitGame and ends at the next InitGame or end of file
+- If a player kills themself (not by ```world```) it will NOT award kill score
+- A game is created with a ```InitGame``` and ends at the next ```InitGame``` or end of file
