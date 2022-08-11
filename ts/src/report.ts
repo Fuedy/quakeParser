@@ -1,7 +1,9 @@
-import { parser } from "./parser"
+import { gamesDataParser } from "./gamesDataParser"
+import { killByMeansParser } from "./killsByMeanParser"
 
 export function getGroupedGameData() {
-    return (parser('quakelog/qgames.log'))
+    return (gamesDataParser('quakelog/qgames.log'))
 }
 
+console.log(killByMeansParser('quakelog/qgames.log'))
 console.log(getGroupedGameData())

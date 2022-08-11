@@ -1,4 +1,4 @@
-import { getPlayersList, getKillsList, calculatePlayerScore, parser } from "../src/parser";
+import { getPlayersList, getKillsList, calculatePlayerScore, gamesDataParser } from "../src/gamesDataParser";
 import * as fs from 'fs'
 const logPath = 'ts/test/test.log'
 const log = fs.readFileSync(logPath, 'utf8')
@@ -60,7 +60,7 @@ describe('calculatePlayerScore', () => {
 
 describe('parser', () => {
   it('Should parse a game raw data', () => {
-    expect(parser(logPath)).toEqual(
+    expect(gamesDataParser(logPath)).toEqual(
    [{
       "gameCount": 1,
       "kills":  {

@@ -57,7 +57,7 @@ export function calculatePlayerScore(killsData: KillsData, playersList: Array<st
     return countKiller
 }
 
-export function parser(logPath: string): Array<GroupedGameData> {
+export function gamesDataParser(logPath: string): Array<GroupedGameData> {
     const log = fs.readFileSync(logPath, 'utf8')
     const gamesRaw: Array<string> = log.split('InitGame')
     const gamesData: Array<GroupedGameData> = []
