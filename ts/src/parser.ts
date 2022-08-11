@@ -1,12 +1,13 @@
 import * as fs from 'fs'
-import { GameRawData, KillsData } from './parser.types'
+import { GroupedGameData, KillsData } from './parser.types'
 
 export function getPlayersList(gameData: string) {
     const playersList: Set<string> = new Set()
-    gameData.match(/ClientUserinfoChanged: \d n\\([a-zA-Z\s]*)/gm).forEach(clientUser => {
+    const playersInfo = gameData.match(/ClientUserinfoChanged: \d n\\([a-zA-Z\s]*)/gm)
+    playersInfo?.forEach(clientUser => {
         playersList.add(clientUser.match(/\\(.)+$/m)[0].slice(1))
     })
-    return playersList
+    return [...playersList]
 }
 
 export function getKillsList(gameData: string) {
@@ -15,10 +16,9 @@ export function getKillsList(gameData: string) {
     const killers = []
     let totalKills = 0
 
-    if (killsList) {
-        totalKills = killsList.length
+        totalKills = killsList?.length || 0
         const kills = (gameData.match(/\d: (.)+killed (.)+ by/gm))
-        kills.forEach(kill => {
+        kills?.forEach(kill => {
             const killer = (kill.slice(3, (kill.indexOf('killed') - 1)))
             const killed = (kill.slice(kill.indexOf('killed') + 7, -3))
             if (killer == '<world>') {
@@ -28,7 +28,6 @@ export function getKillsList(gameData: string) {
                 killers.push(killer)
             }
         })
-    }
     return {
         totalKills,
         killedByWorld,
@@ -36,7 +35,7 @@ export function getKillsList(gameData: string) {
     }
 }
 
-export function calculatePlayerScore(killsData: KillsData, playersList: Set<string>) {
+export function calculatePlayerScore(killsData: KillsData, playersList: Array<string>) {
     const countKiller: Record<string, number> = {}
     const countKilledByWorld: Record<string, number> = {}
     killsData.killedByWorld.forEach((killedName: string) => {
@@ -58,38 +57,25 @@ export function calculatePlayerScore(killsData: KillsData, playersList: Set<stri
     return countKiller
 }
 
-export function parser(logPath: string): Array<GameRawData> {
-    const log: string = fs.readFileSync(logPath, 'utf8')
-    const games: Array<string> = log.split('InitGame')
-    const gamesData: Array<GameRawData> = []
+export function parser(logPath: string): Array<GroupedGameData> {
+    const log = fs.readFileSync(logPath, 'utf8')
+    const gamesRaw: Array<string> = log.split('InitGame')
+    const gamesData: Array<GroupedGameData> = []
 
-    games.shift()
-
-    games.forEach((game, index) => {
+    gamesRaw.slice(1).forEach((game, index) => {
 
         const playersList = getPlayersList(game)
 
-        const killsData = getKillsList(game)
+        const killsList = getKillsList(game)
 
-        const playerScore = calculatePlayerScore(killsData, playersList)
+        const playerScore = calculatePlayerScore(killsList, playersList)
 
         gamesData.push({
             gameCount: index + 1,
-            totalKills: killsData.totalKills,
-            players: playersList,
+            totalKills: killsList.totalKills,
+            players: [...playersList],
             kills: playerScore
         })
     })
     return gamesData
-}
-
-export function gameDataBuilder(gameRawData: GameRawData) {
-    return {
-        game: {
-            gameCount: gameRawData.gameCount,
-            total_kills: gameRawData.totalKills,
-            players: [...gameRawData.players],
-            kills: gameRawData.kills
-        }
-    }
 }

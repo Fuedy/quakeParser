@@ -1,7 +1,7 @@
-export type GameRawData = {
+export type GroupedGameData = {
     gameCount: number,
     totalKills: number,
-    players: Set<string>,
+    players: Array<string>,
     kills: Record<string, number>
 }
 
