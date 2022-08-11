@@ -1,4 +1,4 @@
-import { getPlayersList, getKillsList, calculatePlayerScore, gamesDataParser } from "../src/gamesDataParser";
+import { getPlayersList, getKillsList, calculatePlayerScore, gamesDataParser, playersRanking } from "../src/gamesDataParser";
 import * as fs from 'fs'
 const logPath = 'ts/test/test.log'
 const log = fs.readFileSync(logPath, 'utf8')
@@ -55,6 +55,12 @@ describe('calculatePlayerScore', () => {
       "Mocinha": 0,
       "Zeh": 1,
     })
+  })
+})
+
+describe('playersRanking', () => {
+  it('Should return expected player ranking', () => {
+    expect(playersRanking(logPath)).toEqual({ "Assasinu Credi": 14, "Dono da Bola": 12, "Isgalamido": 17, "Mocinha": 0, "Zeh": 19})
   })
 })
 
