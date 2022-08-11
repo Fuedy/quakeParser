@@ -6,8 +6,6 @@ import * as readline from "node:readline"
 const logPath = 'quakelog/qgames.log'
 const rl = readline.createInterface(stdin,stdout)
 
-console.log(playersRanking(logPath))
-
 console.log(`-----Quake Arena 3 Parser-----
     Select grouped information:
     1 - Grouped info per game
