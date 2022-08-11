@@ -1,10 +1,7 @@
-import { parser, gameDataBuilder } from "./parser"
+import { parser } from "./parser"
 
-export function createReport() {
-    const rawData = (parser('quakelog/qgames.log'))
-    rawData.forEach((gameRawData, index) => {
-        console.log(gameDataBuilder(index, gameRawData))
-    })
+export function getGroupedGameData() {
+    return (parser('quakelog/qgames.log'))
 }
 
-createReport()
+console.log(getGroupedGameData())

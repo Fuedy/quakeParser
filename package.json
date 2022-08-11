@@ -1,12 +1,13 @@
 {
-  "name": "quakeParser",
+  "name": "quake-parser",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "git@github.com:Fuedy/quakeParser.git",
   "author": "Andre Guimaraes <andrecpg@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "report": "ts-node ts/src/report.ts"
+    "report": "ts-node ts/src/report.ts",
+    "test": "jest --coverage"
   },
   "dependencies": {
     "typescript": "^4.7.4"
